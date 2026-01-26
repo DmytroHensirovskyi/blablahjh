@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bookingController = require('../controller/bookingController');
-const authMiddleware = require('../middleware/authMiddleware'); // Импортируем охранника
+const authMiddleware = require('../middleware/authMiddleware');
 
 router.post('/login', bookingController.loginAdmin);
 router.get('/all', authMiddleware, bookingController.getAllBookings);
