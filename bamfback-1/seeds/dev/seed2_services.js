@@ -1,11 +1,9 @@
-//Additional Data to fill Database
 const logger = require('../../utils/logger');
 
-exports.seed2 = async function (knex) {
+exports.seed = async function (knex) {
     try {
-        logger.info('Inserting more mock data...');
+        logger.info('Inserting more mock data from seed2...');
 
-        //Insert Locations
         const locations = [
             { name: 'Location 1', description: 'location for testing' },
             { name: 'Location 2', description: 'Another location' },
@@ -18,10 +16,9 @@ exports.seed2 = async function (knex) {
             logger.info(`Inserted location: ${location.name} with ID: ${locationId}`);
         }
 
-        // Insert Services
         const services = [
             {
-                location_id: locationIds[0], // Use the first location
+                location_id: locationIds[0],
                 name: 'Service 1',
                 description: 'service for testing',
                 script_name: 'dynamic_script_1',
@@ -33,7 +30,7 @@ exports.seed2 = async function (knex) {
                 ],
             },
             {
-                location_id: locationIds[1], // Use the second location
+                location_id: locationIds[1],
                 name: 'Service 2',
                 description: 'Another service',
                 script_name: 'dynamic_script_2',
@@ -58,7 +55,6 @@ exports.seed2 = async function (knex) {
             serviceIds.push(serviceId);
             logger.info(`Inserted service: ${service.name} with ID: ${serviceId}`);
 
-            //Insert Fields for Each Service
             for (const field of service.fields) {
                 const [fieldId] = await knex('fields').insert(field);
                 logger.info(`Inserted field: ${field.name} with ID: ${fieldId}`);
@@ -75,9 +71,5 @@ exports.seed2 = async function (knex) {
         logger.info('mock data insertion complete!');
     } catch (error) {
         logger.error('Error inserting mock data:', error);
-    } finally {
-        knex.destroy();
     }
-}
-
-
+};

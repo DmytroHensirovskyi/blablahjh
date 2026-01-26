@@ -1,11 +1,18 @@
 const db = require('../db');
+const logger = require('../utils/logger');
 
-// Service function to get all services
 const getAllServices = async () => {
   try {
     const services = await db('services')
       .join('locations', 'services.location_id', '=', 'locations.id')
-      .select('services.id', 'services.name', 'services.description', 'services.target_website as website', 'locations.name as location_name')
+      .join('scripts', 'services.script_id', '=', 'scripts.id')
+      .select(
+        'services.id', 
+        'services.name', 
+        'services.description', 
+        'scripts.target_website as website',
+        'locations.name as location_name'
+      )
       .orderBy('services.name');
 
     return services;
@@ -15,30 +22,28 @@ const getAllServices = async () => {
   }
 };
 
-//Service function to get specific service by ID
 const getServiceById = async (serviceId) => {
   try {
     return await db('services')
       .where('id', serviceId)
-      .first();  // first record found, since ID is unique
+      .first();
   } catch (error) {
+    logger.error('Error retrieving service by ID:', error);
     throw new Error('Error retrieving service by ID');
   }
 };
 
-// Service function to get services by locationId
 const getServicesByLocationId = async (locationId) => {
   try {
     return await db('services')
       .where('location_id', locationId)
       .select('id', 'name', 'description', 'location_id');
   } catch (error) {
+    logger.error('Error retrieving services for location:', error);
     throw new Error('Error retrieving services for location');
   }
 };
 
-
-//Service function to get all fields
 const getFieldsForService = async (serviceId) => {
   try {
     const fields = await db('services_fields')
@@ -46,12 +51,13 @@ const getFieldsForService = async (serviceId) => {
       .where({ 'services_fields.service_id': serviceId })
       .select(
         'services_fields.id as service_field_id',
-        'fields.id as field_id',                  // optional
+        'fields.id as field_id',
         'fields.name',
         'fields.type'
       );
     return fields;
   } catch (error) {
+    logger.error('Error retrieving fields for service:', error);
     throw new Error('Error retrieving fields for service');
   }
 };

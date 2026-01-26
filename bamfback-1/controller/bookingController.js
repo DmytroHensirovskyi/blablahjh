@@ -75,16 +75,27 @@ const jwt = require('jsonwebtoken');
 const loginAdmin = async (req, res) => {
   const { username, password } = req.body;
 
-  if (username === 'dmytro' && password === 'supersecret192') {
-    
-    const token = jwt.sign({ id: 1, role: 'admin' }, process.env.JWT_SECRET, {
-      expiresIn: 86400
-    });
+  console.log("Login try:", username, password);
 
-    res.status(200).send({
-      success: true,
-      accessToken: token
-    });
+  if (username === 'admin' && password === 'qwerty123') {
+    
+
+    const secret = process.env.JWT_SECRET || 'secret_key_for_development';
+
+    try {
+      const token = jwt.sign({ id: 1, role: 'admin' }, secret, {
+        expiresIn: 86400
+      });
+
+      res.status(200).send({
+        success: true,
+        accessToken: token
+      });
+    } catch (error) {
+      console.error("Fail of token creating:", error);
+      res.status(500).send({ success: false, message: "Server fail" });
+    }
+
   } else {
     res.status(401).send({ success: false, message: "Invalid Password!" });
   }

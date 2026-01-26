@@ -1,6 +1,6 @@
 const db = require('../db');
+const logger = require('../utils/logger');
 
-// Controller function to get all locations
 const getAllLocations = async (req, res) => {
     try {
         const locations = await db('locations').select('*');

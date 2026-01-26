@@ -1,5 +1,5 @@
 const puppeteer = require("puppeteer");
-const logger = require('./utils/logger');
+const logger = require('../utils/logger'); // ✅ KORRIGIERT (Pfad war falsch)
 
 async function run(targetWebsite, { name, email, startTime, endTime }) {
   const browser = await puppeteer.launch({ headless: true });
@@ -8,7 +8,6 @@ async function run(targetWebsite, { name, email, startTime, endTime }) {
   logger.info(`Open ${targetWebsite}`);
   await page.goto(targetWebsite, { waitUntil: "networkidle0" });
 
-  // Wait for Booking Window
   await page.waitForSelector(".fc-timegrid-slot");
 
   // Choose available Slot
@@ -37,7 +36,6 @@ async function run(targetWebsite, { name, email, startTime, endTime }) {
     return;
   }
 
-  // Buchungsformular ausfüllen
   await page.type("#nameInput", name);
   await page.type("#emailInput", email);
 

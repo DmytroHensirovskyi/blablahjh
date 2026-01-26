@@ -1,6 +1,6 @@
-const serviceService = require('../services/serviceService'); // Import the service
+const serviceService = require('../services/serviceService');
+const logger = require('../utils/logger');
 
-// Controller function to get all services
 const getAllServices = async (req, res) => {
   try {
     const services = await serviceService.getAllServices();
@@ -11,7 +11,6 @@ const getAllServices = async (req, res) => {
   }
 };
 
-//Controller function to get a specific service by ID
 const getServiceById = async (req, res) => {
   try {
     const serviceId = req.params.serviceId;
@@ -31,7 +30,6 @@ const getServiceById = async (req, res) => {
   }
 };
 
-// Controller function to get services by locationId
 const getServicesByLocationId = async (req, res) => {
   try {
     const locationId = req.params.locationId;
@@ -51,7 +49,6 @@ const getServicesByLocationId = async (req, res) => {
   }
 };
 
-//Controller function to get all fields from a Service
 const getFieldsForService = async (req, res) => {
   try {
     const serviceId = req.params.serviceId;
